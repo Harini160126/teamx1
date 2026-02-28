@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Admin Login - JNTU GV PLACEMENT CELL{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="form">
+        <h1 class="text-center mb-3">Admin Login</h1>
+        <p class="text-center mb-3">Access restricted to placement officers only</p>
+        
+        <form method="post" class="w-full">
+            <div class="form-group mb-3">
+                <label for="email" class="mb-1">Admin Email</label>
+                <input type="email" id="email" name="email" class="w-full" placeholder="Enter admin email" required>
+            </div>
+            
+            <div class="form-group mb-3">
+                <label for="password" class="mb-1">Password</label>
+                <input type="password" id="password" name="password" class="w-full" placeholder="Enter password" required>
+            </div>
+            
+            <button type="submit" class="btn primary w-full">
+                <i class="fas fa-sign-in-alt"></i>
+                Admin Login
+            </button>
+        </form>
+        
+        <div class="text-center mt-3">
+            <p>Not an admin? <a href="{{ url_for('login') }}" class="btn secondary">Student/Recruiter Login</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

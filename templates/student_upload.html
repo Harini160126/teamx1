@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Upload Documents - JNTU GV PLACEMENT CELL{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="form">
+        <h1 class="text-center mb-3">Upload Documents</h1>
+        <p class="text-center mb-3">Upload your resume, photo, and supporting documents</p>
+        
+        <form method="post" enctype="multipart/form-data" class="w-full">
+            <div class="form-group mb-3">
+                <label for="resume" class="mb-1">Resume (PDF/DOC)</label>
+                <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx" class="w-full">
+                {% if profile and profile.resume_filename %}
+                    <p class="mt-1" style="color: var(--success-color);">
+                        <i class="fas fa-check-circle"></i> Current: {{ profile.resume_filename }}
+                    </p>
+                {% endif %}
+            </div>
+            
+            <div class="form-group mb-3">
+                <label for="photo" class="mb-1">Profile Photo</label>
+                <input type="file" id="photo" name="photo" accept="image/*" class="w-full">
+                {% if profile and profile.photo_filename %}
+                    <p class="mt-1" style="color: var(--success-color);">
+                        <i class="fas fa-check-circle"></i> Photo uploaded
+                    </p>
+                {% endif %}
+            </div>
+            
+            <button type="submit" class="btn primary w-full">
+                <i class="fas fa-upload"></i>
+                Upload Documents
+            </button>
+        </form>
+        
+        <div class="text-center mt-3">
+            <a href="{{ url_for('student_dashboard') }}" class="btn secondary">Back to Dashboard</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

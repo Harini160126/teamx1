@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+{% block title %}Manage Recruiters - JNTU GV PLACEMENT CELL{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="dashboard-header">
+        <h1>Manage Recruiters</h1>
+        <p>View and manage company recruiter accounts</p>
+    </div>
+    
+    <div class="actions" style="display: flex; gap: 1rem; margin-bottom: 2rem;">
+        <a href="{{ url_for('admin_dashboard') }}" class="btn secondary">
+            <i class="fas fa-arrow-left"></i> Back to Dashboard
+        </a>
+        <a href="{{ url_for('admin_export_recruiters') }}" class="btn primary" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+            <i class="fas fa-download"></i> Export Recruiters Data
+        </a>
+    </div>
+    
+    <div class="card">
+        <h2>All Recruiters</h2>
+        <p>Total: {{ recruiters|length }} recruiter(s)</p>
+        
+        <div class="table-responsive">
+            <table class="table" style="width: 100%; border-collapse: collapse;">
+                <thead>
+                    <tr style="background: var(--primary-color); color: white;">
+                        <th style="padding: 1rem; text-align: left;">ID</th>
+                        <th style="padding: 1rem; text-align: left;">Name</th>
+                        <th style="padding: 1rem; text-align: left;">Email</th>
+                        <th style="padding: 1rem; text-align: left;">Company</th>
+                        <th style="padding: 1rem; text-align: left;">Status</th>
+                        <th style="padding: 1rem; text-align: left;">Registered On</th>
+                        <th style="padding: 1rem; text-align: center;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for recruiter in recruiters %}
+                    {% set recruiter_id = recruiter.id if recruiter.id is defined else recruiter.get('id') %}
+                    {% set recruiter_name = recruiter.name if recruiter.name is defined else recruiter.get('name', recruiter.get('username', 'N/A')) %}
+                    {% set recruiter_email = recruiter.email if recruiter.email is defined else recruiter.get('email', 'N/A') %}
+                    {% set recruiter_company = recruiter.company_name if recruiter.company_name is defined else recruiter.get('company_name', 'Not specified') %}
+                    {% set last_login = recruiter.last_login if recruiter.last_login is defined else recruiter.get('last_login') %}
+                    <tr style="border-bottom: 1px solid var(--border-color);">
+                        <td style="padding: 1rem;">{{ recruiter_id }}</td>
+                        <td style="padding: 1rem;">
+                            <strong>{{ recruiter_name }}</strong>
+                        </td>
+                        <td style="padding: 1rem;">{{ recruiter_email }}</td>
+                        <td style="padding: 1rem;">{{ recruiter_company }}</td>
+                        <td style="padding: 1rem;">
+                            {% if last_login %}
+                            <span style="background: var(--success-color); color: white; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.875rem;">Active</span>
+                            {% else %}
+                            <span style="background: var(--warning-color); color: white; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.875rem;">Inactive</span>
+                            {% endif %}
+                        </td>
+                        <td style="padding: 1rem;">
+                            {% if recruiter.created_at is defined %}
+                                {% if recruiter.created_at is string %}
+                                    {{ recruiter.created_at[:10] if recruiter.created_at else 'N/A' }}
+                                {% else %}
+                                    {{ recruiter.created_at.strftime('%Y-%m-%d') if recruiter.created_at else 'N/A' }}
+                                {% endif %}
+                            {% else %}
+                                {{ recruiter.get('created_at', 'N/A')[:10] if recruiter.get('created_at') else 'N/A' }}
+                            {% endif %}
+                        </td>
+                        <td style="padding: 1rem; text-align: center;">
+                            <div style="display: flex; gap: 0.5rem; justify-content: center;">
+                                <button type="button" class="btn" style="padding: 0.5rem 1rem; font-size: 0.875rem; background: var(--secondary-color); color: white;" onclick="openEditModal('{{ recruiter_id }}', '{{ recruiter_name }}', '{{ recruiter_email }}', '{{ recruiter_company }}')">
+                                    <i class="fas fa-edit"></i> Edit
+                                </button>
+                                {% if recruiter_id %}
+                                <form method="post" action="{{ url_for('admin_delete_recruiter', recruiter_id=recruiter_id) }}" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this recruiter?');">
+                                    <button type="submit" class="btn danger" style="padding: 0.5rem 1rem; font-size: 0.875rem;">
+                                        <i class="fas fa-trash"></i> Delete
+                                    </button>
+                                </form>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="7" style="text-align: center; padding: 2rem;">No recruiters found</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Recruiter Modal -->
+<div id="editModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;">
+    <div style="background: white; padding: 2rem; border-radius: var(--radius-lg); max-width: 500px; width: 90%; max-height: 90vh; overflow-y: auto;">
+        <h2 style="margin-bottom: 1.5rem; color: var(--dark-text);">Edit Recruiter</h2>
+        <form id="editForm" method="post" action="">
+            <input type="hidden" id="edit_recruiter_id" name="recruiter_id">
+            <div style="margin-bottom: 1rem;">
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--dark-text);">Name</label>
+                <input type="text" id="edit_name" name="name" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: var(--radius);" required>
+            </div>
+            <div style="margin-bottom: 1rem;">
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--dark-text);">Email</label>
+                <input type="email" id="edit_email" name="email" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: var(--radius);" required>
+            </div>
+            <div style="margin-bottom: 1.5rem;">
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--dark-text);">Company Name</label>
+                <input type="text" id="edit_company" name="company_name" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: var(--radius);">
+            </div>
+            <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+                <button type="button" class="btn secondary" onclick="closeEditModal()">Cancel</button>
+                <button type="submit" class="btn primary">Save Changes</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+function openEditModal(id, name, email, company) {
+    document.getElementById('edit_recruiter_id').value = id;
+    document.getElementById('edit_name').value = name;
+    document.getElementById('edit_email').value = email;
+    document.getElementById('edit_company').value = company !== 'Not specified' ? company : '';
+    document.getElementById('editForm').action = '/admin/recruiter/' + id + '/edit';
+    document.getElementById('editModal').style.display = 'flex';
+}
+
+function closeEditModal() {
+    document.getElementById('editModal').style.display = 'none';
+}
+
+// Close modal when clicking outside
+window.onclick = function(event) {
+    const modal = document.getElementById('editModal');
+    if (event.target === modal) {
+        closeEditModal();
+    }
+}
+</script>
+{% endblock %}

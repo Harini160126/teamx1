@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block title %}Placement Status - JNTU GV PLACEMENT CELL{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="dashboard-header">
+        <h1>Placement Status</h1>
+        <p>Track your placement journey and application status</p>
+    </div>
+    
+    <!-- Current Status -->
+    <div class="card">
+        <h2>Your Current Status</h2>
+        <div class="profile-stats">
+            <div class="stat-item">
+                <span class="stat-value">{{ profile.placement_status if profile else 'Not Placed' }}</span>
+                <span class="stat-label">Placement Status</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value">{{ profile.gpa if profile else 'N/A' }}</span>
+                <span class="stat-label">GPA</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value">{{ profile.department if profile else 'N/A' }}</span>
+                <span class="stat-label">Department</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Application History -->
+    <div class="card">
+        <h2>Application History</h2>
+        {% if opportunities %}
+        <div class="job-listings">
+            {% for opp in opportunities %}
+            <div class="job-item">
+                <h3>{{ opp.title }}</h3>
+                <p class="job-meta">{{ opp.location }} | {{ opp.type }} | {{ opp.salary }}</p>
+                <p><strong>Status:</strong> 
+                    {% if opp.status == 'Applied' %}
+                    <span style="color: var(--primary-color); font-weight: 600;">
+                        {{ opp.status }}
+                    </span>
+                    {% else %}
+                    <span style="color: var(--success-color); font-weight: 600;">
+                        {{ opp.status }}
+                    </span>
+                    {% endif %}
+                </p>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p>No applications yet. Browse opportunities and apply!</p>
+        {% endif %}
+        <a href="{{ url_for('student_opportunities') }}" class="btn primary mt-2">View Opportunities</a>
+    </div>
+    
+    <!-- Placement Cell Updates -->
+    <div class="card">
+        <h2>Updates from Placement Cell</h2>
+        <div class="activity-feed">
+            <div class="activity-item">
+                <i class="fas fa-bell activity-icon" style="background: var(--primary-color);"></i>
+                <div class="activity-content">
+                    <p><strong>New Opportunity Available</strong></p>
+                    <small>Software Engineer position at TechCorp is now open for applications</small>
+                </div>
+            </div>
+            <div class="activity-item">
+                <i class="fas fa-info-circle activity-icon" style="background: var(--secondary-color);"></i>
+                <div class="activity-content">
+                    <p><strong>Profile Verification</strong></p>
+                    <small>Your profile has been verified by the placement officer</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,317 @@
+{% extends "base.html" %}
+{% block title %}Student Dashboard - JNTU GV PLACEMENT CELL{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="dashboard-header">
+        <h1>Welcome, {{ current_user.name }}!</h1>
+        <p>Your placement journey starts here</p>
+    </div>
+    
+    <!-- Quick Actions -->
+    <div class="actions">
+        <a href="{{ url_for('student_profile') }}" class="btn primary">
+            <i class="fas fa-edit"></i>
+            Edit Profile
+        </a>
+        <a href="{{ url_for('student_upload') }}" class="btn secondary">
+            <i class="fas fa-file-upload"></i>
+            Upload Documents
+        </a>
+        <a href="{{ url_for('student_opportunities') }}" class="btn secondary">
+            <i class="fas fa-briefcase"></i>
+            View Opportunities
+        </a>
+        <a href="{{ url_for('student_status') }}" class="btn secondary">
+            <i class="fas fa-chart-line"></i>
+            View Status
+        </a>
+    </div>
+    
+    {% if profile %}
+    <!-- Profile Overview -->
+    <div class="card">
+        <h2>Your Placement Profile</h2>
+        
+        <div class="profile-stats">
+            <div class="stat-item">
+                <span class="stat-value">{{ profile.gpa }}</span>
+                <span class="stat-label">GPA</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value">{{ profile.department or 'N/A' }}</span>
+                <span class="stat-label">Department</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value">{{ profile.placement_status }}</span>
+                <span class="stat-label">Status</span>
+            </div>
+        </div>
+        
+        <div class="profile-details">
+            <div class="detail-row">
+                <span class="detail-label">Skills:</span>
+                <span class="detail-value">{{ profile.skills or 'Not added yet' }}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Internships:</span>
+                <span class="detail-value">{{ profile.internships or 'Not added yet' }}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Projects:</span>
+                <span class="detail-value">{{ profile.projects or 'Not added yet' }}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Certifications:</span>
+                <span class="detail-value">{{ profile.certifications or 'Not added yet' }}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Career Preferences:</span>
+                <span class="detail-value">{{ profile.career_preferences or 'Not added yet' }}</span>
+            </div>
+        </div>
+        
+        <a href="{{ url_for('student_profile') }}" class="btn primary mt-3">Update Profile</a>
+    </div>
+    
+    <!-- Student Features -->
+    <div class="grid">
+        <div class="card">
+            <h3>Profile Management</h3>
+            <ul style="text-align: left; list-style: none;">
+                <li style="padding: 0.5rem 0;"><i class="fas fa-check" style="color: var(--success-color);"></i> Create detailed placement profiles</li>
+                <li style="padding: 0.5rem 0;"><i class="fas fa-check" style="color: var(--success-color);"></i> Add academic scores</li>
+                <li style="padding: 0.5rem 0;"><i class="fas fa-check" style="color: var(--success-color);"></i> List skills & certifications</li>
+                <li style="padding: 0.5rem 0;"><i class="fas fa-check" style="color: var(--success-color);"></i> Add internships & projects</li>
+            </ul>
+            <a href="{{ url_for('student_profile') }}" class="btn primary mt-2">Manage Profile</a>
+        </div>
+        
+        <div class="card">
+            <h3>Document Upload</h3>
+            <ul style="text-align: left; list-style: none;">
+                <li style="padding: 0.5rem 0;"><i class="fas fa-file-pdf" style="color: var(--primary-color);"></i> Upload resume</li>
+                <li style="padding: 0.5rem 0;"><i class="fas fa-camera" style="color: var(--primary-color);"></i> Upload photograph</li>
+                <li style="padding: 0.5rem 0;"><i class="fas fa-file-alt" style="color: var(--primary-color);"></i> Supporting documents</li>
+                <li style="padding: 0.5rem 0;"><i class="fas fa-edit" style="color: var(--primary-color);"></i> Update anytime</li>
+            </ul>
+            <a href="{{ url_for('student_profile') }}" class="btn secondary mt-2">Upload</a>
+        </div>
+        
+        <div class="card">
+            <h3>Placement Tracking</h3>
+            <ul style="text-align: left; list-style: none;">
+                <li style="padding: 0.5rem 0;"><i class="fas fa-clock" style="color: var(--secondary-color);"></i> Track placement status</li>
+                <li style="padding: 0.5rem 0;"><i class="fas fa-briefcase" style="color: var(--secondary-color);"></i> View opportunities</li>
+                <li style="padding: 0.5rem 0;"><i class="fas fa-envelope" style="color: var(--secondary-color);"></i> Placement cell updates</li>
+                <li style="padding: 0.5rem 0;"><i class="fas fa-history" style="color: var(--secondary-color);"></i> Application history</li>
+            </ul>
+            <a href="#" class="btn secondary mt-2">View Status</a>
+        </div>
+    </div>
+    
+    <!-- Job Recommendations -->
+    <div class="card">
+        <h2><i class="fas fa-briefcase" style="color: var(--secondary-color); margin-right: 0.5rem;"></i> Recommended Opportunities</h2>
+        <div class="job-listings">
+            <!-- Job 1: Cognizant -->
+            <div class="job-item" style="border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1.5rem; background: #ffffff; transition: all 0.3s ease;" onmouseover="this.style.boxShadow='0 10px 30px rgba(0,0,0,0.1)'; this.style.transform='translateY(-4px)'" onmouseout="this.style.boxShadow='none'; this.style.transform='translateY(0)'">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;">
+                    <div>
+                        <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--dark-text); margin-bottom: 0.5rem;">Software Engineer</h3>
+                        <p style="color: var(--medium-text); font-weight: 600; margin-bottom: 0.5rem;"><i class="fas fa-building" style="color: var(--secondary-color); margin-right: 0.5rem;"></i> Cognizant Technology Solutions</p>
+                    </div>
+                    <span style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); color: var(--success-color); padding: 0.5rem 1rem; border-radius: var(--radius-full); font-weight: 700; font-size: 0.95rem;">₹4.0 - 8.0 LPA</span>
+                </div>
+                <p class="job-meta" style="color: var(--medium-text); font-size: 0.9rem; margin: 1rem 0;"><i class="fas fa-map-marker-alt" style="margin-right: 0.5rem;"></i> Hyderabad, Chennai, Bangalore | <i class="fas fa-clock" style="margin-left: 1rem; margin-right: 0.5rem;"></i> Full-time</p>
+                <p style="color: var(--medium-text); line-height: 1.6;">Looking for candidates with Java, .NET, SQL skills. Freshers and experienced both can apply. Good analytical and problem-solving skills required.</p>
+                <div style="margin-top: 1.25rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+                    <span style="background: var(--sidebar-bg); color: var(--primary-color); padding: 0.35rem 0.75rem; border-radius: var(--radius-full); font-size: 0.85rem; font-weight: 500;">Java</span>
+                    <span style="background: var(--sidebar-bg); color: var(--primary-color); padding: 0.35rem 0.75rem; border-radius: var(--radius-full); font-size: 0.85rem; font-weight: 500;">.NET</span>
+                    <span style="background: var(--sidebar-bg); color: var(--primary-color); padding: 0.35rem 0.75rem; border-radius: var(--radius-full); font-size: 0.85rem; font-weight: 500;">SQL</span>
+                </div>
+                <button type="button" class="btn secondary" style="margin-top: 1.25rem;" onclick="openJobModal('cognizant', 'Software Engineer', 'Cognizant Technology Solutions', '₹4.0 - 8.0 LPA', 'Hyderabad, Chennai, Bangalore', 'Java, .NET, SQL')">
+                    <i class="fas fa-paper-plane"></i> Apply Now
+                </button>
+            </div>
+
+            <!-- Job 2: Infosys -->
+            <div class="job-item" style="border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1.5rem; background: #ffffff; transition: all 0.3s ease;" onmouseover="this.style.boxShadow='0 10px 30px rgba(0,0,0,0.1)'; this.style.transform='translateY(-4px)'" onmouseout="this.style.boxShadow='none'; this.style.transform='translateY(0)'">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;">
+                    <div>
+                        <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--dark-text); margin-bottom: 0.5rem;">Systems Engineer</h3>
+                        <p style="color: var(--medium-text); font-weight: 600; margin-bottom: 0.5rem;"><i class="fas fa-building" style="color: var(--secondary-color); margin-right: 0.5rem;"></i> Infosys Limited</p>
+                    </div>
+                    <span style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); color: var(--success-color); padding: 0.5rem 1rem; border-radius: var(--radius-full); font-weight: 700; font-size: 0.95rem;">₹3.6 - 9.5 LPA</span>
+                </div>
+                <p class="job-meta" style="color: var(--medium-text); font-size: 0.9rem; margin: 1rem 0;"><i class="fas fa-map-marker-alt" style="margin-right: 0.5rem;"></i> Bangalore, Mysore, Chennai | <i class="fas fa-clock" style="margin-left: 1rem; margin-right: 0.5rem;"></i> Full-time</p>
+                <p style="color: var(--medium-text); line-height: 1.6;">Hiring fresh engineering graduates for Systems Engineer role. Training will be provided at Mysore campus. B.Tech/BE in any discipline.</p>
+                <div style="margin-top: 1.25rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+                    <span style="background: var(--sidebar-bg); color: var(--primary-color); padding: 0.35rem 0.75rem; border-radius: var(--radius-full); font-size: 0.85rem; font-weight: 500;">Freshers</span>
+                    <span style="background: var(--sidebar-bg); color: var(--primary-color); padding: 0.35rem 0.75rem; border-radius: var(--radius-full); font-size: 0.85rem; font-weight: 500;">Any Branch</span>
+                    <span style="background: var(--sidebar-bg); color: var(--primary-color); padding: 0.35rem 0.75rem; border-radius: var(--radius-full); font-size: 0.85rem; font-weight: 500;">Training</span>
+                </div>
+                <button type="button" class="btn secondary" style="margin-top: 1.25rem;" onclick="openJobModal('infosys', 'Systems Engineer', 'Infosys Limited', '₹3.6 - 9.5 LPA', 'Bangalore, Mysore, Chennai', 'Freshers Welcome')">
+                    <i class="fas fa-paper-plane"></i> Apply Now
+                </button>
+            </div>
+
+            <!-- Job 3: Wipro -->
+            <div class="job-item" style="border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1.5rem; background: #ffffff; transition: all 0.3s ease;" onmouseover="this.style.boxShadow='0 10px 30px rgba(0,0,0,0.1)'; this.style.transform='translateY(-4px)'" onmouseout="this.style.boxShadow='none'; this.style.transform='translateY(0)'">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;">
+                    <div>
+                        <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--dark-text); margin-bottom: 0.5rem;">Project Engineer</h3>
+                        <p style="color: var(--medium-text); font-weight: 600; margin-bottom: 0.5rem;"><i class="fas fa-building" style="color: var(--secondary-color); margin-right: 0.5rem;"></i> Wipro Technologies</p>
+                    </div>
+                    <span style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); color: var(--success-color); padding: 0.5rem 1rem; border-radius: var(--radius-full); font-weight: 700; font-size: 0.95rem;">₹3.5 - 6.5 LPA</span>
+                </div>
+                <p class="job-meta" style="color: var(--medium-text); font-size: 0.9rem; margin: 1rem 0;"><i class="fas fa-map-marker-alt" style="margin-right: 0.5rem;"></i> Hyderabad, Bangalore, Gurgaon | <i class="fas fa-clock" style="margin-left: 1rem; margin-right: 0.5rem;"></i> Full-time</p>
+                <p style="color: var(--medium-text); line-height: 1.6;">Looking for Project Engineers with knowledge of C, C++, Java. Good problem-solving skills and aptitude required. Immediate joiners preferred.</p>
+                <div style="margin-top: 1.25rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+                    <span style="background: var(--sidebar-bg); color: var(--primary-color); padding: 0.35rem 0.75rem; border-radius: var(--radius-full); font-size: 0.85rem; font-weight: 500;">C/C++</span>
+                    <span style="background: var(--sidebar-bg); color: var(--primary-color); padding: 0.35rem 0.75rem; border-radius: var(--radius-full); font-size: 0.85rem; font-weight: 500;">Java</span>
+                    <span style="background: var(--sidebar-bg); color: var(--primary-color); padding: 0.35rem 0.75rem; border-radius: var(--radius-full); font-size: 0.85rem; font-weight: 500;">Aptitude</span>
+                </div>
+                <button type="button" class="btn secondary" style="margin-top: 1.25rem;" onclick="openJobModal('wipro', 'Project Engineer', 'Wipro Technologies', '₹3.5 - 6.5 LPA', 'Hyderabad, Bangalore, Gurgaon', 'C, C++, Java')">
+                    <i class="fas fa-paper-plane"></i> Apply Now
+                </button>
+            </div>
+
+            <!-- Job 4: Drishya AI Labs -->
+            <div class="job-item" style="border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.5rem; background: #ffffff; transition: all 0.3s ease;" onmouseover="this.style.boxShadow='0 10px 30px rgba(0,0,0,0.1)'; this.style.transform='translateY(-4px)'" onmouseout="this.style.boxShadow='none'; this.style.transform='translateY(0)'">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;">
+                    <div>
+                        <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--dark-text); margin-bottom: 0.5rem;">AI Engineer</h3>
+                        <p style="color: var(--medium-text); font-weight: 600; margin-bottom: 0.5rem;"><i class="fas fa-building" style="color: var(--secondary-color); margin-right: 0.5rem;"></i> Drishya AI Labs</p>
+                    </div>
+                    <span style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); color: var(--success-color); padding: 0.5rem 1rem; border-radius: var(--radius-full); font-weight: 700; font-size: 0.95rem;">₹6.0 - 15.0 LPA</span>
+                </div>
+                <p class="job-meta" style="color: var(--medium-text); font-size: 0.9rem; margin: 1rem 0;"><i class="fas fa-map-marker-alt" style="margin-right: 0.5rem;"></i> Hyderabad | <i class="fas fa-clock" style="margin-left: 1rem; margin-right: 0.5rem;"></i> Full-time</p>
+                <p style="color: var(--medium-text); line-height: 1.6;">Hiring for AI Engineer role. Strong Python programming and machine learning knowledge required. Experience with TensorFlow/PyTorch preferred.</p>
+                <div style="margin-top: 1.25rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+                    <span style="background: var(--sidebar-bg); color: var(--primary-color); padding: 0.35rem 0.75rem; border-radius: var(--radius-full); font-size: 0.85rem; font-weight: 500;">Python</span>
+                    <span style="background: var(--sidebar-bg); color: var(--primary-color); padding: 0.35rem 0.75rem; border-radius: var(--radius-full); font-size: 0.85rem; font-weight: 500;">Machine Learning</span>
+                    <span style="background: var(--sidebar-bg); color: var(--primary-color); padding: 0.35rem 0.75rem; border-radius: var(--radius-full); font-size: 0.85rem; font-weight: 500;">AI</span>
+                </div>
+                <button type="button" class="btn secondary" style="margin-top: 1.25rem;" onclick="openJobModal('drishya', 'AI Engineer', 'Drishya AI Labs', '₹6.0 - 15.0 LPA', 'Hyderabad', 'Python, Machine Learning, AI')">
+                    <i class="fas fa-paper-plane"></i> Apply Now
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Job Application Modal -->
+    <div id="jobModal" class="modal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15, 23, 42, 0.6); z-index: 2000; align-items: center; justify-content: center; padding: 1rem;">
+        <div class="modal-content" style="background: #ffffff; border-radius: var(--radius-lg); max-width: 600px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: 0 25px 50px rgba(0,0,0,0.25);">
+            <div style="padding: 2rem; border-bottom: 1px solid var(--border-color); background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%); border-radius: var(--radius-lg) var(--radius-lg) 0 0;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h2 style="color: #ffffff; margin: 0; font-size: 1.5rem;"><i class="fas fa-paper-plane" style="margin-right: 0.75rem;"></i>Apply for Position</h2>
+                    <button type="button" onclick="closeJobModal()" style="background: none; border: none; color: #ffffff; font-size: 1.5rem; cursor: pointer; padding: 0; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: var(--radius-full); transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.2)'" onmouseout="this.style.background='none'">&times;</button>
+                </div>
+            </div>
+            
+            <div style="padding: 2rem;">
+                <!-- Job Summary -->
+                <div style="background: var(--sidebar-bg); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 2rem;">
+                    <h3 id="modalJobTitle" style="font-size: 1.25rem; font-weight: 700; color: var(--dark-text); margin-bottom: 0.5rem;"></h3>
+                    <p id="modalCompany" style="color: var(--medium-text); font-weight: 600; margin-bottom: 0.5rem;"></p>
+                    <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
+                        <span style="color: var(--success-color); font-weight: 700;"><i class="fas fa-money-bill-wave" style="margin-right: 0.5rem;"></i><span id="modalPackage"></span></span>
+                        <span style="color: var(--medium-text);"><i class="fas fa-map-marker-alt" style="margin-right: 0.5rem;"></i><span id="modalLocation"></span></span>
+                    </div>
+                </div>
+
+                <!-- Application Form -->
+                <form id="jobApplicationForm" method="post" action="{{ url_for('apply_job') }}">
+                    <input type="hidden" id="jobId" name="job_id">
+                    
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="display: block; font-weight: 600; color: var(--dark-text); margin-bottom: 0.5rem;">Full Name *</label>
+                        <input type="text" name="full_name" value="{{ current_user.name }}" required style="width: 100%; padding: 0.875rem 1rem; border: 2px solid var(--border-color); border-radius: var(--radius); font-size: 1rem; transition: border-color 0.2s;" onfocus="this.style.borderColor='var(--secondary-color)'" onblur="this.style.borderColor='var(--border-color)'">
+                    </div>
+
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="display: block; font-weight: 600; color: var(--dark-text); margin-bottom: 0.5rem;">Email Address *</label>
+                        <input type="email" name="email" value="{{ current_user.email }}" required style="width: 100%; padding: 0.875rem 1rem; border: 2px solid var(--border-color); border-radius: var(--radius); font-size: 1rem; transition: border-color 0.2s;" onfocus="this.style.borderColor='var(--secondary-color)'" onblur="this.style.borderColor='var(--border-color)'">
+                    </div>
+
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="display: block; font-weight: 600; color: var(--dark-text); margin-bottom: 0.5rem;">Phone Number *</label>
+                        <input type="tel" name="phone" placeholder="+91 98765 43210" required style="width: 100%; padding: 0.875rem 1rem; border: 2px solid var(--border-color); border-radius: var(--radius); font-size: 1rem; transition: border-color 0.2s;" onfocus="this.style.borderColor='var(--secondary-color)'" onblur="this.style.borderColor='var(--border-color)'">
+                    </div>
+
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="display: block; font-weight: 600; color: var(--dark-text); margin-bottom: 0.5rem;">Department *</label>
+                        <select name="department" required style="width: 100%; padding: 0.875rem 1rem; border: 2px solid var(--border-color); border-radius: var(--radius); font-size: 1rem; background: #ffffff; transition: border-color 0.2s;" onfocus="this.style.borderColor='var(--secondary-color)'" onblur="this.style.borderColor='var(--border-color)'">
+                            <option value="">Select Department</option>
+                            <option value="CSE">Computer Science & Engineering (CSE)</option>
+                            <option value="ECE">Electronics & Communication (ECE)</option>
+                            <option value="EEE">Electrical & Electronics (EEE)</option>
+                            <option value="IT">Information Technology (IT)</option>
+                            <option value="MECH">Mechanical Engineering</option>
+                            <option value="CIVIL">Civil Engineering</option>
+                        </select>
+                    </div>
+
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="display: block; font-weight: 600; color: var(--dark-text); margin-bottom: 0.5rem;">CGPA/Percentage *</label>
+                        <input type="text" name="cgpa" placeholder="e.g., 8.5 or 85%" required style="width: 100%; padding: 0.875rem 1rem; border: 2px solid var(--border-color); border-radius: var(--radius); font-size: 1rem; transition: border-color 0.2s;" onfocus="this.style.borderColor='var(--secondary-color)'" onblur="this.style.borderColor='var(--border-color)'">
+                    </div>
+
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="display: block; font-weight: 600; color: var(--dark-text); margin-bottom: 0.5rem;">Skills (comma separated)</label>
+                        <textarea name="skills" rows="3" placeholder="e.g., Java, Python, SQL, HTML, CSS, JavaScript" style="width: 100%; padding: 0.875rem 1rem; border: 2px solid var(--border-color); border-radius: var(--radius); font-size: 1rem; resize: vertical; transition: border-color 0.2s;" onfocus="this.style.borderColor='var(--secondary-color)'" onblur="this.style.borderColor='var(--border-color)'"></textarea>
+                    </div>
+
+                    <div style="margin-bottom: 2rem;">
+                        <label style="display: block; font-weight: 600; color: var(--dark-text); margin-bottom: 0.5rem;">Why should we hire you? *</label>
+                        <textarea name="cover_letter" rows="4" placeholder="Briefly describe why you're a good fit for this role..." required style="width: 100%; padding: 0.875rem 1rem; border: 2px solid var(--border-color); border-radius: var(--radius); font-size: 1rem; resize: vertical; transition: border-color 0.2s;" onfocus="this.style.borderColor='var(--secondary-color)'" onblur="this.style.borderColor='var(--border-color)'"></textarea>
+                    </div>
+
+                    <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+                        <button type="button" class="btn secondary" onclick="closeJobModal()">Cancel</button>
+                        <button type="submit" class="btn primary"><i class="fas fa-paper-plane" style="margin-right: 0.5rem;"></i>Submit Application</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openJobModal(jobId, jobTitle, company, package, location, skills) {
+            document.getElementById('jobId').value = jobId;
+            document.getElementById('modalJobTitle').textContent = jobTitle;
+            document.getElementById('modalCompany').textContent = company;
+            document.getElementById('modalPackage').textContent = package;
+            document.getElementById('modalLocation').textContent = location;
+            document.getElementById('jobModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeJobModal() {
+            document.getElementById('jobModal').style.display = 'none';
+            document.body.style.overflow = '';
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('jobModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeJobModal();
+            }
+        });
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && document.getElementById('jobModal').style.display === 'flex') {
+                closeJobModal();
+            }
+        });
+    </script>
+    {% else %}
+    <div class="card">
+        <h2>Complete Your Profile</h2>
+        <p>You haven't created your placement profile yet. Complete your profile to unlock personalized recommendations and connect with recruiters.</p>
+        <a href="{{ url_for('student_profile') }}" class="btn primary mt-2">Get Started</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

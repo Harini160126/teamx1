@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% block title %}Student Contact Details - JNTU GV PLACEMENT CELL{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="dashboard-header">
+        <h1>Student Contact Details</h1>
+        <p>Contact information for {{ user.name }}</p>
+    </div>
+    
+    <div class="actions">
+        <a href="{{ url_for('recruiter_dashboard') }}" class="btn secondary">
+            <i class="fas fa-arrow-left"></i> Back to Dashboard
+        </a>
+    </div>
+    
+    <div class="card">
+        <h2>{{ user.name }}</h2>
+        <p style="color: var(--text-muted);">{{ profile.department }} | GPA: {{ profile.gpa }}</p>
+        
+        <div style="margin-top: 2rem;">
+            <h3 style="color: var(--primary-color); margin-bottom: 1rem;">
+                <i class="fas fa-address-card"></i> Contact Information
+            </h3>
+            
+            <div style="background: var(--bg-secondary); padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem;">
+                <div style="margin-bottom: 1rem;">
+                    <strong style="color: var(--text-muted); display: block; margin-bottom: 0.25rem;">Email:</strong>
+                    <span style="font-size: 1.1rem;">
+                        <i class="fas fa-envelope" style="color: var(--primary-color); margin-right: 0.5rem;"></i>
+                        {{ user.email }}
+                    </span>
+                </div>
+                
+                {% if profile.phone %}
+                <div style="margin-bottom: 1rem;">
+                    <strong style="color: var(--text-muted); display: block; margin-bottom: 0.25rem;">Phone:</strong>
+                    <span style="font-size: 1.1rem;">
+                        <i class="fas fa-phone" style="color: var(--success-color); margin-right: 0.5rem;"></i>
+                        {{ profile.phone }}
+                    </span>
+                </div>
+                {% endif %}
+            </div>
+            
+            {% if profile.linkedin or profile.github or profile.portfolio %}
+            <h3 style="color: var(--primary-color); margin-bottom: 1rem;">
+                <i class="fas fa-link"></i> Online Profiles
+            </h3>
+            
+            <div style="background: var(--bg-secondary); padding: 1.5rem; border-radius: 8px;">
+                {% if profile.linkedin %}
+                <div style="margin-bottom: 1rem;">
+                    <strong style="color: var(--text-muted); display: block; margin-bottom: 0.25rem;">LinkedIn:</strong>
+                    <a href="{{ profile.linkedin }}" target="_blank" style="color: var(--primary-color); font-size: 1.1rem;">
+                        <i class="fab fa-linkedin" style="margin-right: 0.5rem;"></i>
+                        {{ profile.linkedin }}
+                    </a>
+                </div>
+                {% endif %}
+                
+                {% if profile.github %}
+                <div style="margin-bottom: 1rem;">
+                    <strong style="color: var(--text-muted); display: block; margin-bottom: 0.25rem;">GitHub:</strong>
+                    <a href="{{ profile.github }}" target="_blank" style="color: var(--primary-color); font-size: 1.1rem;">
+                        <i class="fab fa-github" style="margin-right: 0.5rem;"></i>
+                        {{ profile.github }}
+                    </a>
+                </div>
+                {% endif %}
+                
+                {% if profile.portfolio %}
+                <div>
+                    <strong style="color: var(--text-muted); display: block; margin-bottom: 0.25rem;">Portfolio:</strong>
+                    <a href="{{ profile.portfolio }}" target="_blank" style="color: var(--primary-color); font-size: 1.1rem;">
+                        <i class="fas fa-globe" style="margin-right: 0.5rem;"></i>
+                        {{ profile.portfolio }}
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+        
+        <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color);">
+            <h3 style="color: var(--secondary-color); margin-bottom: 1rem;">Actions</h3>
+            <div style="display: flex; gap: 1rem;">
+                <a href="mailto:{{ user.email }}" class="btn primary">
+                    <i class="fas fa-envelope"></i> Send Email
+                </a>
+                {% if profile.resume_filename %}
+                <a href="{{ url_for('view_resume', student_id=profile.id) }}" class="btn secondary">
+                    <i class="fas fa-file-pdf"></i> View Resume
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

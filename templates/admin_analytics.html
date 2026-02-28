@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+{% block title %}Analytics & Reports - JNTU GV PLACEMENT CELL{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="dashboard-header">
+        <h1>Analytics & Reports</h1>
+        <p>Comprehensive placement statistics and insights</p>
+    </div>
+    
+    <div class="actions" style="display: flex; gap: 1rem; margin-bottom: 2rem;">
+        <a href="{{ url_for('admin_dashboard') }}" class="btn secondary">
+            <i class="fas fa-arrow-left"></i> Back to Dashboard
+        </a>
+        <a href="{{ url_for('admin_analytics_export') }}" class="btn primary" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+            <i class="fas fa-download"></i> Export Analytics Data
+        </a>
+        <a href="{{ url_for('admin_export_recruiters') }}" class="btn primary" style="background: linear-gradient(135deg, #00b4d8 0%, #1a365d 100%);">
+            <i class="fas fa-users"></i> Export Recruiters
+        </a>
+    </div>
+    
+    <!-- Key Metrics -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <h3>{{ total_students }}</h3>
+            <p>Total Students</p>
+        </div>
+        <div class="stat-card">
+            <h3>{{ placed_students }}</h3>
+            <p>Placed</p>
+        </div>
+        <div class="stat-card">
+            <h3>{{ not_placed_students }}</h3>
+            <p>Not Placed</p>
+        </div>
+        <div class="stat-card">
+            <h3>{{ "%.1f"|format(placement_rate) }}%</h3>
+            <p>Placement Rate</p>
+        </div>
+        <div class="stat-card">
+            <h3>{{ total_recruiters }}</h3>
+            <p>Total Recruiters</p>
+        </div>
+        <div class="stat-card">
+            <h3>{{ active_recruiters }}</h3>
+            <p>Active Recruiters</p>
+        </div>
+        <div class="stat-card">
+            <h3>{{ "%.1f"|format(recruiter_success_rate) }}%</h3>
+            <p>Recruiter Success Rate</p>
+        </div>
+        <div class="stat-card">
+            <h3>{{ recent_students }}</h3>
+            <p>New (7 days)</p>
+        </div>
+    </div>
+    
+    <!-- Recruiter Details -->
+    {% if recruiters %}
+    <div class="card">
+        <h2>Logged Recruiter Details</h2>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Company</th>
+                        <th>Status</th>
+                        <th>Registration Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for recruiter in recruiters %}
+                    <tr>
+                        <td><strong>{{ recruiter.name if recruiter.name is defined else recruiter.get('name', recruiter.get('username', 'N/A')) }}</strong></td>
+                        <td>{{ recruiter.email if recruiter.email is defined else recruiter.get('email', 'N/A') }}</td>
+                        <td>{{ recruiter.company_name if recruiter.company_name is defined else recruiter.get('company_name', 'Not specified') }}</td>
+                        <td>
+                            {% set last_login = recruiter.last_login if recruiter.last_login is defined else recruiter.get('last_login') %}
+                            {% if last_login %}
+                            <span class="badge bg-success">Active</span>
+                            {% else %}
+                            <span class="badge bg-warning">Inactive</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if recruiter.created_at is defined %}
+                                {{ recruiter.created_at[:10] if recruiter.created_at and recruiter.created_at is string else (recruiter.created_at.strftime('%Y-%m-%d') if recruiter.created_at else 'N/A') }}
+                            {% else %}
+                                {{ recruiter.get('created_at', 'N/A')[:10] if recruiter.get('created_at') else 'N/A' }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endif %}
+    
+    <!-- Department-wise Statistics -->
+    <div class="card">
+        <h2>Department-wise Statistics</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Department</th>
+                    <th>Total Students</th>
+                    <th>Average GPA</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if dept_stats %}
+                    {% if dept_stats.items() is defined %}
+                        {% for dept, stats in dept_stats.items() %}
+                        <tr>
+                            <td>{{ dept or 'Not Specified' }}</td>
+                            <td>{{ stats.count }}</td>
+                            <td>{{ "%.2f"|format(stats.avg_gpa) if stats.avg_gpa else 'N/A' }}</td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        {% for dept, count, avg_gpa in dept_stats %}
+                        <tr>
+                            <td>{{ dept or 'Not Specified' }}</td>
+                            <td>{{ count }}</td>
+                            <td>{{ "%.2f"|format(avg_gpa) if avg_gpa else 'N/A' }}</td>
+                        </tr>
+                        {% endfor %}
+                    {% endif %}
+                {% else %}
+                <tr>
+                    <td colspan="3" style="text-align: center;">No department data available</td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+    
+    <!-- Placement Status Breakdown -->
+    <div class="grid">
+        <div class="card">
+            <h3>Placement Status</h3>
+            <div style="margin-top: 1rem;">
+                <div style="display: flex; justify-content: space-between; padding: 0.75rem 0; border-bottom: 1px solid var(--border-color);">
+                    <span>Placed</span>
+                    <span style="font-weight: 700; color: var(--success-color);">{{ placed_students }}</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; padding: 0.75rem 0; border-bottom: 1px solid var(--border-color);">
+                    <span>Not Placed</span>
+                    <span style="font-weight: 700; color: var(--danger-color);">{{ not_placed_students }}</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; padding: 0.75rem 0;">
+                    <span>Success Rate</span>
+                    <span style="font-weight: 700; color: var(--primary-color);">{{ "%.1f"|format(placement_rate) }}%</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h3>Quick Actions</h3>
+            <div style="margin-top: 1rem;">
+                <a href="{{ url_for('admin_students') }}" class="btn primary w-full mb-2">View All Students</a>
+                <a href="{{ url_for('admin_recruiters') }}" class="btn secondary w-full mb-2">View All Recruiters</a>
+                <a href="#" class="btn secondary w-full">Export Report</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+{% block title %}Login - JNTU GV PLACEMENT CELL{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="form">
+        <h1 class="text-center mb-3">Welcome to PyTech Arena!</h1>
+        <p class="text-center mb-3">JNTU GV College of Engineering Placement Management System</p>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <form method="post" class="w-full">
+            <div class="form-group mb-3">
+                <label for="email" class="mb-1">Email Address</label>
+                <input type="email" id="email" name="email" class="w-full" placeholder="Enter your email address" required>
+            </div>
+            
+            <div class="form-group mb-3">
+                <label for="password" class="mb-1">Password</label>
+                <input type="password" id="password" name="password" class="w-full" placeholder="Enter your password" required>
+            </div>
+            
+            <div class="form-group mb-3">
+                <label class="checkbox-label">
+                    <input type="checkbox" name="remember" id="remember">
+                    <span>Remember me</span>
+                </label>
+            </div>
+            
+            <button type="submit" class="btn primary w-full">
+                <i class="fas fa-sign-in-alt"></i>
+                Sign In
+            </button>
+        </form>
+        
+        <div class="text-center mt-4">
+            <div class="login-options">
+                <p class="mb-2">Don't have an account? <a href="{{ url_for('register') }}" class="btn secondary">Register Now</a></p>
+                
+                <div class="role-login-links">
+                    <h3 class="text-center mb-3">Quick Access</h3>
+                    <div class="row">
+                        <div class="col-md-4 mb-2">
+                            <div class="role-card">
+                                <i class="fas fa-user-graduate"></i>
+                                <h5>Student</h5>
+                                <p class="text-muted">Access student dashboard</p>
+                                <a href="{{ url_for('login') }}" class="btn btn-outline-primary btn-sm">Student Login</a>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <div class="role-card">
+                                <i class="fas fa-briefcase"></i>
+                                <h5>Recruiter</h5>
+                                <p class="text-muted">Post jobs & manage applications</p>
+                                <a href="{{ url_for('login') }}" class="btn btn-outline-success btn-sm">Recruiter Login</a>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <div class="role-card">
+                                <i class="fas fa-user-shield"></i>
+                                <h5>Administrator</h5>
+                                <p class="text-muted">System administration</p>
+                                <a href="{{ url_for('admin_login') }}" class="btn btn-outline-danger btn-sm">Admin Login</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.role-login-links {
+    margin-top: 2rem;
+}
+
+.role-card {
+    text-align: center;
+    padding: 1.5rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    background: #f8f9fa;
+    transition: all 0.3s ease;
+}
+
+.role-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.role-card i {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+}
+
+.role-card h5 {
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.role-card p {
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
+}
+
+.btn-sm {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+}
+
+.btn-outline-primary {
+    background: transparent;
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+}
+
+.btn-outline-primary:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+.btn-outline-success {
+    background: transparent;
+    color: var(--success-color);
+    border: 1px solid var(--success-color);
+}
+
+.btn-outline-success:hover {
+    background: var(--success-color);
+    color: white;
+}
+
+.btn-outline-danger {
+    background: transparent;
+    color: var(--danger-color);
+    border: 1px solid var(--danger-color);
+}
+
+.btn-outline-danger:hover {
+    background: var(--danger-color);
+    color: white;
+}
+</style>
+{% endblock %}

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}JNTU GV Placement Cell - Career Network{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+<header>
+    <nav class="navbar">
+        <div class="container" style="position: relative;">
+            <div class="nav-left">
+                <a href="{{ url_for('index') }}" class="brand" style="display: flex; align-items: center; gap: 0.75rem;">
+                    <img src="https://dhondi.ai/logos/jntugv.png" alt="JNTUGV Logo" style="height: 40px; width: auto; object-fit: contain;">
+                    <span style="font-size: 1.25rem; font-weight: 700; white-space: nowrap;">JNTU GV PLACEMENT CELL</span>
+                </a>
+            </div>
+            
+            <!-- Hamburger Menu Button -->
+            <button class="hamburger" id="hamburgerBtn" aria-label="Toggle menu">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+            
+            <div class="nav-right" id="navMenu">
+                {% if current_user %}
+                    <span class="nav-user">
+                        <i class="fas fa-user"></i>
+                        Welcome, {{ current_user.name }} ({{ current_user.role|title }})
+                    </span>
+                    <a href="{{ url_for('logout') }}" class="btn secondary">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                {% else %}
+                    <a href="{{ url_for('login') }}" class="btn secondary">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </a>
+                    <a href="{{ url_for('register') }}" class="btn primary">
+                        <i class="fas fa-user-plus"></i> Register
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+</header>
+
+<main class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        <i class="fas fa-info-circle"></i>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+</main>
+
+<footer style="background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%); color: #ffffff; padding: 4rem 0 2rem; margin-top: 4rem;">
+    <div class="container">
+        <!-- Main Footer Content -->
+        <div style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem; margin-bottom: 3rem;">
+            <!-- Brand Section -->
+            <div>
+                <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem;">
+                    <img src="https://dhondi.ai/logos/jntugv.png" alt="JNTUGV Logo" style="height: 50px; width: auto; object-fit: contain; border-radius: var(--radius-sm); background: #ffffff; padding: 4px;">
+                    <span style="font-size: 1.35rem; font-weight: 700;">JNTU GV PLACEMENT CELL</span>
+                </div>
+                <p style="color: rgba(255,255,255,0.85); line-height: 1.8; margin-bottom: 1.5rem;">Empowering students with career opportunities. The largest, most trusted network connecting talent with top employers.</p>
+                <div style="display: flex; gap: 1rem;">
+                    <a href="#" style="width: 40px; height: 40px; background: rgba(255,255,255,0.15); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; color: #ffffff; text-decoration: none; transition: all 0.2s;"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" style="width: 40px; height: 40px; background: rgba(255,255,255,0.15); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; color: #ffffff; text-decoration: none; transition: all 0.2s;"><i class="fab fa-twitter"></i></a>
+                    <a href="#" style="width: 40px; height: 40px; background: rgba(255,255,255,0.15); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; color: #ffffff; text-decoration: none; transition: all 0.2s;"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" style="width: 40px; height: 40px; background: rgba(255,255,255,0.15); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; color: #ffffff; text-decoration: none; transition: all 0.2s;"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            
+            <!-- For Students -->
+            <div>
+                <h4 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 1.5rem; color: #ffffff;">For Students</h4>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="margin-bottom: 0.75rem;"><a href="{{ url_for('register') }}" style="color: rgba(255,255,255,0.8); text-decoration: none; transition: color 0.2s;">Create Profile</a></li>
+                    <li style="margin-bottom: 0.75rem;"><a href="{{ url_for('login') }}" style="color: rgba(255,255,255,0.8); text-decoration: none; transition: color 0.2s;">Upload Resume</a></li>
+                    <li style="margin-bottom: 0.75rem;"><a href="{{ url_for('login') }}" style="color: rgba(255,255,255,0.8); text-decoration: none; transition: color 0.2s;">Browse Jobs</a></li>
+                    <li style="margin-bottom: 0.75rem;"><a href="{{ url_for('login') }}" style="color: rgba(255,255,255,0.8); text-decoration: none; transition: color 0.2s;">Career Resources</a></li>
+                </ul>
+            </div>
+            
+            <!-- For Recruiters -->
+            <div>
+                <h4 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 1.5rem; color: #ffffff;">For Recruiters</h4>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="margin-bottom: 0.75rem;"><a href="{{ url_for('register') }}" style="color: rgba(255,255,255,0.8); text-decoration: none; transition: color 0.2s;">Post Jobs</a></li>
+                    <li style="margin-bottom: 0.75rem;"><a href="{{ url_for('login') }}" style="color: rgba(255,255,255,0.8); text-decoration: none; transition: color 0.2s;">Search Candidates</a></li>
+                    <li style="margin-bottom: 0.75rem;"><a href="{{ url_for('login') }}" style="color: rgba(255,255,255,0.8); text-decoration: none; transition: color 0.2s;">Campus Hiring</a></li>
+                    <li style="margin-bottom: 0.75rem;"><a href="{{ url_for('login') }}" style="color: rgba(255,255,255,0.8); text-decoration: none; transition: color 0.2s;">Partner With Us</a></li>
+                </ul>
+            </div>
+            
+            <!-- Contact Info -->
+            <div>
+                <h4 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 1.5rem; color: #ffffff;">Contact</h4>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="margin-bottom: 1rem; display: flex; align-items: flex-start; gap: 0.75rem;">
+                        <i class="fas fa-map-marker-alt" style="margin-top: 0.25rem; color: var(--secondary-color);"></i>
+                        <span style="color: rgba(255,255,255,0.8);">JNTU-GV, Vizianagaram, Andhra Pradesh, India</span>
+                    </li>
+                    <li style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.75rem;">
+                        <i class="fas fa-envelope" style="color: var(--secondary-color);"></i>
+                        <a href="mailto:placement@jntugv.edu.in" style="color: rgba(255,255,255,0.8); text-decoration: none;">placement@jntugv.edu.in</a>
+                    </li>
+                    <li style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.75rem;">
+                        <i class="fas fa-phone" style="color: var(--secondary-color);"></i>
+                        <span style="color: rgba(255,255,255,0.8);">+91 8922 123456</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Divider -->
+        <div style="border-top: 1px solid rgba(255,255,255,0.2); padding-top: 2rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                <p style="color: rgba(255,255,255,0.7); margin: 0;">&copy; 2026 JNTU GV Placement Cell. All rights reserved.</p>
+                <div style="display: flex; gap: 2rem;">
+                    <a href="#" style="color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.9rem;">Privacy Policy</a>
+                    <a href="#" style="color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.9rem;">Terms of Service</a>
+                    <a href="#" style="color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.9rem;">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
+

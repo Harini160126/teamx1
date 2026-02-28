@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% block title %}Edit Profile - JNTU GV PLACEMENT CELL{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="form">
+        <h1 class="text-center mb-3">Edit Your Profile</h1>
+        <p class="text-center mb-3">Complete your profile to connect with recruiters and land your dream job</p>
+        
+        <form method="post" enctype="multipart/form-data" class="w-full">
+            <div class="form-grid">
+                <div class="form-group mb-3">
+                    <label for="department" class="mb-1">Department *</label>
+                    <input type="text" id="department" name="department" class="w-full" value="{{ profile.department or '' }}" placeholder="e.g., Computer Science" required>
+                </div>
+                
+                <div class="form-group mb-3">
+                    <label for="gpa" class="mb-1">GPA *</label>
+                    <input type="number" id="gpa" name="gpa" class="w-full" step="0.01" min="0" max="10" value="{{ profile.gpa or '' }}" placeholder="e.g., 8.5" required>
+                </div>
+            </div>
+            
+            <div class="form-group mb-3">
+                <label for="skills" class="mb-1">Skills (comma-separated)</label>
+                <textarea id="skills" name="skills" class="w-full" rows="3" placeholder="e.g., Python, JavaScript, React, SQL">{{ profile.skills or '' }}</textarea>
+            </div>
+            
+            <div class="form-group mb-3">
+                <label for="internships" class="mb-1">Internship Experience</label>
+                <textarea id="internships" name="internships" class="w-full" rows="3" placeholder="Describe your internship experiences">{{ profile.internships or '' }}</textarea>
+            </div>
+            
+            <div class="form-group mb-3">
+                <label for="projects" class="mb-1">Projects</label>
+                <textarea id="projects" name="projects" class="w-full" rows="3" placeholder="List your notable projects">{{ profile.projects or '' }}</textarea>
+            </div>
+            
+            <div class="form-group mb-3">
+                <label for="certifications" class="mb-1">Certifications</label>
+                <textarea id="certifications" name="certifications" class="w-full" rows="3" placeholder="List your certifications">{{ profile.certifications or '' }}</textarea>
+            </div>
+            
+            <div class="form-group mb-3">
+                <label for="career_preferences" class="mb-1">Career Preferences</label>
+                <textarea id="career_preferences" name="career_preferences" class="w-full" rows="3" placeholder="Describe your career goals and preferences">{{ profile.career_preferences or '' }}</textarea>
+            </div>
+            
+            <!-- Contact Details Section -->
+            <h3 style="color: var(--primary-color); margin: 1.5rem 0 1rem 0; border-bottom: 2px solid var(--primary-color); padding-bottom: 0.5rem;">
+                <i class="fas fa-address-card"></i> Contact Details
+            </h3>
+            <p class="mb-3" style="color: var(--text-muted);">These details will be visible to recruiters when they view your profile</p>
+            
+            <div class="form-grid">
+                <div class="form-group mb-3">
+                    <label for="phone" class="mb-1">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" class="w-full" value="{{ profile.phone or '' }}" placeholder="e.g., +91 9876543210">
+                </div>
+                
+                <div class="form-group mb-3">
+                    <label for="linkedin" class="mb-1">LinkedIn Profile URL</label>
+                    <input type="url" id="linkedin" name="linkedin" class="w-full" value="{{ profile.linkedin or '' }}" placeholder="https://linkedin.com/in/yourprofile">
+                </div>
+            </div>
+            
+            <div class="form-grid">
+                <div class="form-group mb-3">
+                    <label for="github" class="mb-1">GitHub Profile URL</label>
+                    <input type="url" id="github" name="github" class="w-full" value="{{ profile.github or '' }}" placeholder="https://github.com/yourusername">
+                </div>
+                
+                <div class="form-group mb-3">
+                    <label for="portfolio" class="mb-1">Portfolio Website</label>
+                    <input type="url" id="portfolio" name="portfolio" class="w-full" value="{{ profile.portfolio or '' }}" placeholder="https://yourportfolio.com">
+                </div>
+            </div>
+            
+            <!-- Resume Upload Section -->
+            <h3 style="color: var(--primary-color); margin: 1.5rem 0 1rem 0; border-bottom: 2px solid var(--primary-color); padding-bottom: 0.5rem;">
+                <i class="fas fa-file-upload"></i> Documents
+            </h3>
+            
+            <div class="form-grid">
+                <div class="form-group mb-3">
+                    <label for="resume" class="mb-1">Upload Resume</label>
+                    <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx">
+                    {% if profile.resume_filename %}
+                        <p class="mt-1">Current file: {{ profile.resume_filename }}</p>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group mb-3">
+                    <label for="photo" class="mb-1">Profile Photo</label>
+                    <input type="file" id="photo" name="photo" accept="image/*">
+                    {% if profile.photo_filename %}
+                        <p class="mt-1">Current photo uploaded</p>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <button type="submit" class="btn primary w-full">
+                <i class="fas fa-save"></i>
+                Save Profile
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+

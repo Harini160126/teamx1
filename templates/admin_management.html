@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block title %}Admin Management - JNTU GV PLACEMENT CELL{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="dashboard-header">
+        <h1>Admin Management Dashboard</h1>
+        <p>Manage students, recruiters, and view comprehensive analytics</p>
+    </div>
+    
+    <!-- Management Navigation -->
+    <div class="grid">
+        <div class="card">
+            <i class="fas fa-users fa-2x mb-2" style="color: var(--primary-color);"></i>
+            <h3>Manage Students</h3>
+            <p>View, edit, and manage all student accounts and profiles</p>
+            <a href="{{ url_for('admin_students') }}" class="btn primary mt-2">Manage Students</a>
+        </div>
+        <div class="card">
+            <i class="fas fa-building fa-2x mb-2" style="color: var(--secondary-color);"></i>
+            <h3>Manage Recruiters</h3>
+            <p>View and manage company recruiter accounts</p>
+            <a href="{{ url_for('admin_recruiters') }}" class="btn secondary mt-2">Manage Recruiters</a>
+        </div>
+        <div class="card">
+            <i class="fas fa-chart-line fa-2x mb-2" style="color: var(--accent-color);"></i>
+            <h3>Analytics & Reports</h3>
+            <p>Comprehensive statistics and placement analytics</p>
+            <a href="{{ url_for('admin_analytics') }}" class="btn secondary mt-2">View Analytics</a>
+        </div>
+    </div>
+    
+    <!-- Quick Stats -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <h3>{{ total_students }}</h3>
+            <p>Total Students</p>
+        </div>
+        <div class="stat-card">
+            <h3>{{ placed_students }}</h3>
+            <p>Placed Students</p>
+        </div>
+        <div class="stat-card">
+            <h3>{{ total_recruiters }}</h3>
+            <p>Total Recruiters</p>
+        </div>
+        <div class="stat-card">
+            <h3>{{ "%.1f"|format(placement_rate) }}%</h3>
+            <p>Placement Rate</p>
+        </div>
+    </div>
+    
+    <!-- Recent Activity -->
+    <div class="card">
+        <h2>System Overview</h2>
+        <div class="grid" style="margin-top: 1.5rem;">
+            <div>
+                <h4 style="color: var(--primary-color); margin-bottom: 1rem;">Student Management</h4>
+                <ul style="list-style: none; text-align: left;">
+                    <li style="padding: 0.5rem 0;"><i class="fas fa-check" style="color: var(--success-color);"></i> Register new students</li>
+                    <li style="padding: 0.5rem 0;"><i class="fas fa-check" style="color: var(--success-color);"></i> Verify student profiles</li>
+                    <li style="padding: 0.5rem 0;"><i class="fas fa-check" style="color: var(--success-color);"></i> Update placement status</li>
+                    <li style="padding: 0.5rem 0;"><i class="fas fa-check" style="color: var(--success-color);"></i> Delete student accounts</li>
+                </ul>
+            </div>
+            <div>
+                <h4 style="color: var(--secondary-color); margin-bottom: 1rem;">Recruiter Management</h4>
+                <ul style="list-style: none; text-align: left;">
+                    <li style="padding: 0.5rem 0;"><i class="fas fa-check" style="color: var(--success-color);"></i> View recruiter accounts</li>
+                    <li style="padding: 0.5rem 0;"><i class="fas fa-check" style="color: var(--success-color);"></i> Monitor recruiter activity</li>
+                    <li style="padding: 0.5rem 0;"><i class="fas fa-check" style="color: var(--success-color);"></i> Manage access permissions</li>
+                    <li style="padding: 0.5rem 0;"><i class="fas fa-check" style="color: var(--success-color);"></i> Delete recruiter accounts</li>
+                </ul>
+            </div>
+            <div>
+                <h4 style="color: var(--accent-color); margin-bottom: 1rem;">Analytics & Reports</h4>
+                <ul style="list-style: none; text-align: left;">
+                    <li style="padding: 0.5rem 0;"><i class="fas fa-check" style="color: var(--success-color);"></i> Department-wise reports</li>
+                    <li style="padding: 0.5rem 0;"><i class="fas fa-check" style="color: var(--success-color);"></i> Placement statistics</li>
+                    <li style="padding: 0.5rem 0;"><i class="fas fa-check" style="color: var(--success-color);"></i> Student performance</li>
+                    <li style="padding: 0.5rem 0;"><i class="fas fa-check" style="color: var(--success-color);"></i> Export data reports</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
